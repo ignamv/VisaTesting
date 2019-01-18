@@ -10,7 +10,7 @@ namespace VisaTesting
 {
     class ExpectMessageBasedSession : IDisposable
     {
-        public Queue<string> simulatedReads, actualWrites = new Queue<string>();
+        private Queue<string> simulatedReads, actualWrites = new Queue<string>();
         public MockMessageBasedSession session = new MockMessageBasedSession();
 
         public ExpectMessageBasedSession()
