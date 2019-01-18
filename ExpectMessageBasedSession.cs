@@ -15,7 +15,7 @@ namespace VisaTesting
     ///   that it matches what was written.
     /// When disposed, check that SimulatedReads and ExpectedWrites are empty
     /// </summary>
-    class ExpectMessageBasedSession : IDisposable
+    public class ExpectMessageBasedSession : IDisposable
     {
         private Queue<string> simulatedReads, actualWrites = new Queue<string>();
         /// <summary>

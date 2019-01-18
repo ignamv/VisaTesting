@@ -14,7 +14,7 @@ namespace VisaTesting
     /// <remarks>
     /// All writes and reads are delegated to fields WriteHandler and ReadHandler
     /// </remarks>
-    class MockMessageBasedSession : IMessageBasedRawIO, IMessageBasedSession
+    public class MockMessageBasedSession : IMessageBasedRawIO, IMessageBasedSession
     {
         public delegate void IWriteHandler(string msg);
         /// <summary>
