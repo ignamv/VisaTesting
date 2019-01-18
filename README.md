@@ -18,6 +18,7 @@ public void getPositionTest()
 		Assert.AreEqual(3, position.X);
 		Assert.AreEqual(4, position.Y);
 	}
+	// On exiting the `using` block, `expect` will check that all expected reads/writes happened.
 }
 ```
 
