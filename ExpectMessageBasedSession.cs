@@ -17,7 +17,6 @@ namespace VisaTesting
     /// </summary>
     public class ExpectMessageBasedSession : IDisposable
     {
-        private Queue<string> simulatedReads, actualWrites = new Queue<string>();
         /// <summary>
         /// The actual mock session that should be passed to the driver under test
         /// </summary>
@@ -26,19 +25,21 @@ namespace VisaTesting
         public ExpectMessageBasedSession()
         {
             session.WriteHandler = WriteHandler;
+            session.ReadHandler = ReadHandler;
         }
 
         /// <summary>
         /// The strings in this queue are successively returned on each read
         /// On dispose, there must be no strings remaining.
         /// </summary>
-        public Queue<string> SimulatedReads
+        public Queue<string> SimulatedReads { get; set; }
+
+        private string ReadHandler()
         {
-            get { return simulatedReads; }
-            set {
-                simulatedReads = value;
-                session.ReadHandler = simulatedReads.Dequeue;
-            }
+            if (SimulatedReads.Count == 0)
+                return "";
+            else
+                return SimulatedReads.Dequeue();
         }
 
         private void WriteHandler(string msg)
@@ -67,11 +68,17 @@ namespace VisaTesting
                 return;
             disposed = true;
             if (disposing)
+            {
+                Assert.AreEqual(0, SimulatedReads.Count, "Not all simulated messages were read");
+                // Ensure all expected writes happened
+                Assert.AreEqual(0, ExpectedWrites.Count, "Not all expected messages were written");
                 session.Dispose();
-            // Ensure all messages were read
-            Assert.AreEqual(0, simulatedReads.Count, "Not all simulated messages were read");
-            // Ensure all expected writes happened
-            Assert.AreEqual(0, ExpectedWrites.Count, "Not all expected messages were written");
+            }
+        }
+
+        ~ExpectMessageBasedSession()
+        {
+            Dispose(false);
         }
     }
 }
