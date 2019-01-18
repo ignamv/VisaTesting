@@ -20,3 +20,6 @@ public void getPositionTest()
 	}
 }
 ```
+
+This has been tested with Keysight IO Libraries version 18.0.22209.2 . 
+Use with NI Visa might require additional methods to be implemented in `MockMessageBasedSession`.
