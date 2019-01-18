@@ -15,7 +15,7 @@ namespace VisaTesting
 
         public ExpectMessageBasedSession()
         {
-            session.WriteHandler = actualWrites.Enqueue;
+            session.WriteHandler = WriteHandler;
         }
 
         public Queue<string> SimulatedReads
@@ -24,6 +24,11 @@ namespace VisaTesting
             set { simulatedReads = value; session.ReadHandler = simulatedReads.Dequeue; }
         }
 
+        private void WriteHandler(string msg)
+        {
+            string expected = ExpectedWrites.Dequeue();
+            Assert.AreEqual(expected, msg);
+        }
         public Queue<string> ExpectedWrites { get; set; }
 
         private bool disposed = false;
@@ -43,8 +48,8 @@ namespace VisaTesting
                 session.Dispose();
             // Ensure all messages were read
             Assert.AreEqual(0, simulatedReads.Count);
-            // Assert writes match
-            CollectionAssert.AreEqual(ExpectedWrites, actualWrites);
+            // Ensure all expected writes happened
+            Assert.AreEqual(0, ExpectedWrites.Count);
         }
     }
 }
