@@ -36,14 +36,15 @@ namespace VisaTesting
 
         public void Read(byte[] buffer, long index, long count, out long actualCount, out ReadStatus readStatus)
         {
-            byte[] ret = Encoding.ASCII.GetBytes(ReadHandler());
+            string msg = ReadHandler();
+            byte[] ret = Encoding.ASCII.GetBytes(msg);
             if (ret.Length > count)
             {
                 // TODO: buffer excess bytes
                 throw new Exception($"Buffer has size {count}, read {ret.Length} bytes");
             }
             actualCount = ret.Length;
-            readStatus = ReadStatus.TerminationCharacterEncountered;
+            readStatus = ReadStatus.EndReceived;
             ret.CopyTo(buffer, 0);
         }
 
