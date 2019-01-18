@@ -21,7 +21,10 @@ namespace VisaTesting
         public Queue<string> SimulatedReads
         {
             get { return simulatedReads; }
-            set { simulatedReads = value; session.ReadHandler = simulatedReads.Dequeue; }
+            set {
+                simulatedReads = value;
+                session.ReadHandler = simulatedReads.Dequeue;
+            }
         }
 
         private void WriteHandler(string msg)
