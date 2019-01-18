@@ -29,6 +29,11 @@ namespace VisaTesting
         /// </summary>
         public IReadHandler ReadHandler { get; set; }
 
+        public MockMessageBasedSession()
+        {
+            FormattedIO = new Ivi.Visa.FormattedIO.MessageBasedFormattedIO(this);
+        }
+
         public void Read(byte[] buffer, long index, long count, out long actualCount, out ReadStatus readStatus)
         {
             byte[] ret = Encoding.ASCII.GetBytes(ReadHandler());
@@ -55,7 +60,7 @@ namespace VisaTesting
         public byte TerminationCharacter { get; set; }
         public bool TerminationCharacterEnabled { get; set; }
 
-        public IMessageBasedFormattedIO FormattedIO => new Ivi.Visa.FormattedIO.MessageBasedFormattedIO(this);
+        public IMessageBasedFormattedIO FormattedIO { get; }
         public IMessageBasedRawIO RawIO => this;
 
         public string HardwareInterfaceName => "MockHardwareInterfaceName";
