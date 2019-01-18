@@ -44,7 +44,7 @@ namespace VisaTesting
         private void WriteHandler(string msg)
         {
             string expected = ExpectedWrites.Dequeue();
-            Assert.AreEqual(expected, msg);
+            Assert.AreEqual(expected, msg, "Written message does not match expected");
         }
 
         /// <summary>
@@ -69,9 +69,9 @@ namespace VisaTesting
             if (disposing)
                 session.Dispose();
             // Ensure all messages were read
-            Assert.AreEqual(0, simulatedReads.Count);
+            Assert.AreEqual(0, simulatedReads.Count, "Not all simulated messages were read");
             // Ensure all expected writes happened
-            Assert.AreEqual(0, ExpectedWrites.Count);
+            Assert.AreEqual(0, ExpectedWrites.Count, "Not all expected messages were written");
         }
     }
 }
