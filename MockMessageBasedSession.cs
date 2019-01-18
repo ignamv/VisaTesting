@@ -8,11 +8,25 @@ using System.Linq;
 
 namespace VisaTesting
 {
+    /// <summary>
+    /// A mock implementation of a Visa message-based session
+    /// </summary>
+    /// <remarks>
+    /// All writes and reads are delegated to fields WriteHandler and ReadHandler
+    /// </remarks>
     class MockMessageBasedSession : IMessageBasedRawIO, IMessageBasedSession
     {
         public delegate void IWriteHandler(string msg);
+        /// <summary>
+        /// This delegate is called whenever the session is written to.
+        /// The msg parameter is the message that was written.
+        /// </summary>
         public IWriteHandler WriteHandler { get; set; }
         public delegate string IReadHandler();
+        /// <summary>
+        /// This delegate is called whenever the session is read from.
+        /// Its return value becomes the read message.
+        /// </summary>
         public IReadHandler ReadHandler { get; set; }
 
         public void Read(byte[] buffer, long index, long count, out long actualCount, out ReadStatus readStatus)
