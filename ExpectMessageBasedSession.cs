@@ -69,6 +69,11 @@ namespace VisaTesting
             disposed = true;
             if (disposing)
             {
+                // Ensure all messages were read
+                string expected = "end_terminator_120395776583764298357629837";
+                SimulatedReads.Enqueue(expected);
+                string actual = session.FormattedIO.ReadString();
+                Assert.AreEqual(expected, actual, "Unread data remained in formatted IO buffer");
                 Assert.AreEqual(0, SimulatedReads.Count, "Not all simulated messages were read");
                 // Ensure all expected writes happened
                 Assert.AreEqual(0, ExpectedWrites.Count, "Not all expected messages were written");
